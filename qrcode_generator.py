@@ -6,11 +6,10 @@ URL = "https://lifxuidjisbluwwautjd.supabase.co"
 KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpZnh1aWRqaXNibHV3d2F1dGpkIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzE1NDUwNDksImV4cCI6MTk4NzEyMTA0OX0.u0vX3jzEiFoFSoCMGUoPj-oloJAOvUXo_wUEFMB3Zl0"
 W = 6 
 H = 4
-font_path = "/usr/share/fonts/truetype/fonts-yrsa-rasa/Yrsa-SemiBold.ttf"  # for unix
-# font_path = "arial.ttf"  # should work for windows
 
-font = ImageFont.truetype(font_path, 48)
+font = ImageFont.truetype("/usr/share/fonts/truetype/fonts-yrsa-rasa/Yrsa-SemiBold.ttf", 48)
 text_color = 0
+logo = Image.open('./logo.png')
 
 def create_image(ids):
     size = 290
@@ -18,10 +17,13 @@ def create_image(ids):
 
     for i in range(len(ids)):
         qr_code = qrcode.make(data=ids[i]).get_image()
+        qr_code.paste(logo, (50, 240))
         ImageDraw.Draw(qr_code).text((50, 0), ids[i], font=font, fill=text_color)        
         x = int(size * ((i % W) * (1 + 1/(W-1))))
         y = int(size * ((i // W) * (1 + 1/(W-1))))
         page.paste(qr_code, (x, y))
+        
+
     return page
 
 def main():
